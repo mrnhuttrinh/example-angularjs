@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Example Angular js</title>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+</head>
+<style type="text/css">
+	#result{
+		margin: 20px 0px;
+	}
+</style>
+<body>
+	<div ng-app="todoApp">
+		<div ng-controller="indexController">
+			<h2>My Todo List</h2>
+			<input type="text" placeholder="Add New" ng-model="new"><button ng-click="addNew()" style="margin-left: 3px;">Add new</button>
+			<div id="result">
+				<div ng-repeat="n in lstNew">
+					<input type="checkbox"  ng-model="n.checked" ng-click="checkedIndex(n)">{{n.value}}</br>
+				</div>
+			</div>
+			<button  ng-show="lstNew.length >0" ng-click="removeNew()">Remove marked</button>
+		</div>
+	</div>
+<script type="text/javascript">
+	angular.module("todoApp", [])
+		.controller("indexController", function($scope){
+			$scope.lstNew = [];
+			$scope.chckedIndexs = [];
+            $scope.addNew = function(){
+            	$scope.lstNew.push({value: $scope.new, checked:false});
+            	$scope.new = '';
+            };
+           
+            $scope.checkedIndex = function (n) {
+		        if ($scope.chckedIndexs.indexOf(n) === -1) {
+		            $scope.chckedIndexs.push(n);
+		        }
+		        else {
+		            $scope.chckedIndexs.splice($scope.chckedIndexs.indexOf(n), 1);
+		        }
+			}
+            $scope.removeNew = function(){
+		        angular.forEach($scope.chckedIndexs, function (value, index) {
+		            $scope.lstNew.splice($scope.lstNew.indexOf(value), 1);
+		        });
+		        $scope.chckedIndexs = [];
+			};
+        });
+</script>
+</body>
+</html>
