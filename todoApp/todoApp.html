@@ -1,45 +1,47 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html ng-app="todoApp">
+<head> 
+	<meta charset="utf-8">
 	<title>todoApp Angularjs</title>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-<body ng-app="todoApp">
-	<div id="todoapp" ng-controller="indexController" class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-lg-offset-3 col-md-offset-3">
-		<div id="header" class="text-center">
+<body ng-controller="todoAppController">
+	<div id="todoapp">
+		<div class="header">
 			<h1>todos</h1>
 		</div>
-		<div id="content">
-			<div id="content-top">
-				<form id="todo-form">
-					<input id="todo-checkbox" type="checkbox" ng-show="lstAll.length > 0"  ng-click="addAllCompleted(checkboxAll)" ng-model="checkboxAll" class="glyphicon glyphicon-menu-down" ng-class="checkboxAll == true ? 'checkbox-all' : ''">
-					<input id="todo-text" placeholder="What needs to be done?" ng-model="new" ng-keypress="addTodo($event)"  autofocus />
+		<div class="content">
+			<div class="content-top">
+				<form class="todo-form">
+					<input class="new-todo" placeholder="What needs to be done?" ng-model="new" ng-keypress="addTodo($event)"  autofocus />
 				</form>
 			</div>
-			<div id="content-middle">
-				<div ng-repeat="all in lstAll | filter :typeFilter track by $index" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" class ="items" ng-class="all.checked == true  ? 'items-completed' : 'items-active'">
+			<div class="content-middle">
+				<input class="checkall-todo" type="checkbox" ng-show="lstAll.length > 0"  ng-click="addAllCompleted(checkboxAll)" ng-model="checkboxAll">
+				<div ng-repeat="todo in lstAll | filter :typeFilter track by $index" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" ng-class="todo.checked == true  ? 'items-completed' : 'items-active'" class="todo-list">
 					<div class="view" ng-show="!showUpdate">
-						<input type="checkbox" ng-model="all.checked" ng-click="changeList(all)" />
-						<label ng-dblclick="todoUpdate = all.value; showUpdate = true">{{all.value}}</label>
-						<span class="glyphicon glyphicon-remove pull-right" ng-click="remove(all)" ng-show="hoverEdit"></span>
+						<input class="toggle" type="checkbox" ng-model="todo.checked" ng-click="changeList(todo)">
+						<label ng-dblclick="todoUpdate = todo.value; showUpdate = true">{{todo.value}}</label>
+						<button type="button" ng-click="remove(todo)" class="remove-todo"></button>
 					</div>
-					<form ng-submit="updateTodo(all, todoUpdate); showUpdate = false" ng-show="showUpdate"> 
-						<input type="text" ng-model= "todoUpdate" class="input-update">
+					<form ng-submit="updateTodo(todo, todoUpdate); showUpdate = false" ng-show="showUpdate"> 
+						<input type="text" ng-model= "todoUpdate" class="edit">
 					</form>
 				</div>
 			</div>
-			<div id="content-bottom" ng-show="lstAll.length >0">
+			<div class="content-bottom" ng-show="lstAll.length >0">
 				<div class="pull-left">{{lstAll.length}} items left</div>
-				<div class="pull-left group-select">
-					<a href="" ng-repeat="type in lstFilter" ng-model="selectFilter" ng-click="setFilter(type)" ng-class="{selected: status == type}">{{type}}</a>
+				<div class="pull-left filter-group">
+					<a ui-sref="home" ng-class="{selected: status == ''}">All</a>
+      				<a ui-sref="todo({ status: 'active' })" ng-class="{selected: status == 'active'}">Active</a>
+      				<a ui-sref="todo({ status: 'completed'})" ng-class="{selected: status == 'completed'}">Completed</a> 
 				</div>
-				<div class="pull-right">
+				<div class="pull-left clear-completed">
 					<a href="" ng-show="completedCount > 0" ng-click ="removeAll()">Clear completed</a>
 				</div>
 			</div>
 		</div>
-		<div id="footer">d
+		<div class="footer">s
 			<p>Double-click to edit a todo</p>
 			<p>Credits:
 				<a href="http://twitter.com/cburgdorf">Christoph Burgdorf</a>,
@@ -51,90 +53,8 @@
 		</div>
 	</div>
 	<script type="text/javascript" src="js/angular.min.js"></script>
-	<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript">
+	<script type="text/javascript" src="js/angular-ui-router.js"></script>
+	<script type="text/javascript" src="js/todoAppController.js"></script>
 
-	angular.module("todoApp", [])
-		.controller("indexController", function($scope){
-			$scope.lstFilter = ['All', 'Active', 'Completed'];
-			$scope.checkboxAll = false;
-			$scope.status = 'All';
-			$scope.lstCompleted = [];
-			$scope.lstAll = JSON.parse(localStorage.getItem('locname') || "[]");
-			$scope.addTodo = function(keyEvent){
-				var item = {
-					value: $scope.new,
-					checked: false
-				};
-				if (keyEvent.which === 13){
-					if($scope.new != '' && $scope.new != '	'){
-						$scope.lstAll.push(item);
-					 	localStorage.setItem('locname', JSON.stringify($scope.lstAll));
-    					$scope.new = '';
-					}
-				}
-			}
-			$scope.$watch(
-				function () {
-					$scope.completedCount = 0;
-					for(i = 0 ; i < $scope.lstAll.length ; i++){
-						if($scope.lstAll[i].checked){
-							$scope.completedCount ++;
-							$scope.lstCompleted.push($scope.lstAll[i]);
-						}
-					}
-				}
-			);
-
-         	$scope.remove = function(item){
-         		$scope.lstAll.splice($scope.lstAll.indexOf(item), 1);
-         		localStorage.setItem('locname', JSON.stringify($scope.lstAll));
-			};
-
-			$scope.hoverIn = function(){
-        		this.hoverEdit = true;
-   			};
-
-		    $scope.hoverOut = function(){
-		        this.hoverEdit = false;
-		    };
-
-			$scope.addAllCompleted = function(checked){
-		  		for(i = 0 ; i< $scope.lstAll.length ; i++){
-		  			if($scope.lstAll[i].checked !== checked){
-		  				$scope.changeList($scope.lstAll[i], checked);
-		  			}
-		  		}
-			};
-			$scope.changeList = function(item, checked){
-				var index = $scope.lstAll.indexOf(item);
-		  		if(angular.isDefined(checked)){
-		  			$scope.lstAll[index].checked = checked;
-		  		}
-		  		localStorage.setItem('locname', JSON.stringify($scope.lstAll));
-			};
-			$scope.updateTodo = function(item, value){
-				var indexUpdate = $scope.lstAll.indexOf(item);
-				if($scope.lstAll[indexUpdate].value !== value){
-					$scope.lstAll[$scope.lstAll.indexOf(item)].value = value;
-				}
-				localStorage.setItem('locname', JSON.stringify($scope.lstAll));
-			}
-			$scope.setFilter = function(type){
-				$scope.typeFilter = (type === 'Active') ? {checked: false} : 
-				(type ==='Completed') ? {checked: true} : {};
-				$scope.status = type;
-			}
-			$scope.removeAll = function(){
-				angular.forEach($scope.lstCompleted, function (value, index) {
-		            $scope.lstAll.splice($scope.lstAll.indexOf(value), 1);
-		        });
-		        localStorage.setItem('locname', JSON.stringify($scope.lstAll));
-		        $scope.lstCompleted = [];
-			};
-			
-		});
-</script>
 </body>
 </html>
