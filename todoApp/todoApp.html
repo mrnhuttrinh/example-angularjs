@@ -33,15 +33,15 @@
 				<div class="pull-left">{{lstAll.length}} items left</div>
 				<div class="pull-left filter-group">
 					<a ui-sref="home" ng-class="{selected: status == ''}">All</a>
-      				<a ui-sref="todo({ status: 'active' })" ng-class="{selected: status == 'active'}">Active</a>
-      				<a ui-sref="todo({ status: 'completed'})" ng-class="{selected: status == 'completed'}">Completed</a> 
+					<a ui-sref="todo({ status: 'active' })" ng-class="{selected: status == 'active'}">Active</a>
+					<a ui-sref="todo({ status: 'completed'})" ng-class="{selected: status == 'completed'}">Completed</a>
 				</div>
 				<div class="pull-left clear-completed">
 					<a href="" ng-show="completedCount > 0" ng-click ="removeAll()">Clear completed</a>
 				</div>
 			</div>
 		</div>
-		<div class="footer">s
+		<div class="footer">
 			<p>Double-click to edit a todo</p>
 			<p>Credits:
 				<a href="http://twitter.com/cburgdorf">Christoph Burgdorf</a>,
