@@ -1,35 +1,11 @@
-var todoapp = angular.module( 'todoApp', ['ui.router'] );
 
-todoapp.config(function($stateProvider, $urlRouterProvider){
-
-	$stateProvider
-		.state('home', {
-			url: '/',
-			templateUrl: 'todoApp.html'
-		})
-		.state('todo', {
-			url: '/:status',
-			templateUrl: 'todoApp.html',
-			controller: function($scope, $stateParams) {
-				$scope.status = $stateParams.status;
-				console.log($scope.status);
-			}
-		});
-	
-	$urlRouterProvider.otherwise('/');
-});
-
-todoapp.controller("todoAppController",function($scope, $stateParams){
+todoapp.controller("todoAppController",function($scope, $stateParams, localStorage){
 
 	$scope.checkboxAll = false;
-	$scope.lstAll = JSON.parse(localStorage.getItem('todolist') || "[]");
 	$scope.lstCompleted = [];
 	$scope.stateParams = $stateParams;
 
-	function setStorage(){
-		localStorage.setItem('todolist', JSON.stringify($scope.lstAll));
-	}
-
+	$scope.lstAll = localStorage.getStorage();
 	$scope.$watch(
 		function () {
 			$scope.completedCount = 0;
@@ -58,7 +34,7 @@ todoapp.controller("todoAppController",function($scope, $stateParams){
 			if($scope.new != '' && $scope.new != '	'){
 				$scope.lstAll.push(item);
 				$scope.new = '';
-				setStorage();
+				localStorage.setStorage($scope.lstAll);
 			}
 		}
 	};
@@ -66,7 +42,7 @@ todoapp.controller("todoAppController",function($scope, $stateParams){
 
 	$scope.remove = function(item){
 		$scope.lstAll.splice($scope.lstAll.indexOf(item), 1);
-		setStorage();
+		localStorage.setStorage($scope.lstAll);
 	};
 
 	$scope.addAllCompleted = function(checked){
@@ -83,7 +59,7 @@ todoapp.controller("todoAppController",function($scope, $stateParams){
 			$scope.lstAll[index].checked = checked;
 		}
 
-		setStorage();
+		localStorage.setStorage($scope.lstAll);
 	};
 
 	$scope.updateTodo = function(item, value){
@@ -91,7 +67,7 @@ todoapp.controller("todoAppController",function($scope, $stateParams){
 		if($scope.lstAll[indexUpdate].value !== value){
 			$scope.lstAll[$scope.lstAll.indexOf(item)].value = value;
 		}
-		setStorage();
+		localStorage.setStorage($scope.lstAll);
 	};
 
 	$scope.removeAll = function(){
@@ -107,7 +83,7 @@ todoapp.controller("todoAppController",function($scope, $stateParams){
 
 		$scope.lstCompleted = [];
 
-		setStorage();
+		localStorage.setStorage($scope.lstAll);
 	};
 
 });
