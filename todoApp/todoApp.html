@@ -12,9 +12,7 @@
 		</div>
 		<div class="content">
 			<div class="content-top">
-				<form class="todo-form">
-					<input class="new-todo" placeholder="What needs to be done?" ng-model="new" ng-keypress="addTodo($event)"  autofocus />
-				</form>
+				<div my-form></div>
 			</div>
 			<div class="content-middle">
 				<input class="checkall-todo" type="checkbox" ng-show="lstAll.length > 0"  ng-click="addAllCompleted(checkboxAll)" ng-model="checkboxAll">
@@ -56,6 +54,7 @@
 	<script type="text/javascript" src="js/libs/angular-ui-router.js"></script>
 	<script type="text/javascript" src="js/GlobalApp.js"></script>
 	<script type="text/javascript" src="js/service/todoAppStorage.js"></script>
+	<script type="text/javascript" src="js/directive/todoAppDirective.js"></script>
 	<script type="text/javascript" src="js/controller/todoAppController.js"></script>
 
 </body>
