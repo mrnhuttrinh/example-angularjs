@@ -5,7 +5,8 @@ todoapp.controller("todoAppController",function($scope, $stateParams, localStora
 	$scope.lstCompleted = [];
 	$scope.stateParams = $stateParams;
 
-	$scope.lstAll = localStorage.getStorage();
+	// $scope.lstAll = localStorage.getStorage();
+
 	$scope.$watch(
 		function () {
 			$scope.completedCount = 0;
@@ -25,19 +26,18 @@ todoapp.controller("todoAppController",function($scope, $stateParams, localStora
 
 	});
 
-	$scope.addTodo = function(keyEvent){
-		var item = {
-			value: $scope.new,
-			checked: false
-		};
-		if (keyEvent.which === 13){
-			if($scope.new != '' && $scope.new != '	'){
-				$scope.lstAll.push(item);
-				$scope.new = '';
-				localStorage.setStorage($scope.lstAll);
-			}
-		}
-	};
+	// $scope.addTodo = function(){
+	// 	var item = {
+	// 		value: $scope.new,
+	// 		checked: false
+	// 	};
+		
+	// 	if ($scope.new) {
+ //        	$scope.lstAll.push(item);
+ //        	$scope.new = '';
+ //        	localStorage.setStorage($scope.lstAll);
+ //        }
+	// };
 
 
 	$scope.remove = function(item){
