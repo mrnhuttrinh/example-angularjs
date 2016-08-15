@@ -4,19 +4,20 @@ todoapp.controller("todoAppController",function($scope, $stateParams, localStora
 	$scope.checkboxAll = false;
 	$scope.lstCompleted = [];
 	$scope.stateParams = $stateParams;
+	$scope.completedCount = 0;
 
-	// $scope.lstAll = localStorage.getStorage();
+	$scope.lstAll = localStorage.getStorage();
 
-	$scope.$watch(
-		function () {
-			$scope.completedCount = 0;
+	$scope.$watch('lstAll',function () {
 			for(i = 0 ; i < $scope.lstAll.length ; i++){
 				if($scope.lstAll[i].checked){
 					$scope.completedCount ++;
 				}
 			}
-		}
-	);
+			
+			localStorage.setStorage($scope.lstAll);
+
+		}, true);
 
 	$scope.$watchCollection('stateParams', function(){
 		var status = $scope.status = $stateParams.status || '';
@@ -35,14 +36,13 @@ todoapp.controller("todoAppController",function($scope, $stateParams, localStora
 	// 	if ($scope.new) {
  //        	$scope.lstAll.push(item);
  //        	$scope.new = '';
- //        	localStorage.setStorage($scope.lstAll);
  //        }
 	// };
 
 
 	$scope.remove = function(item){
 		$scope.lstAll.splice($scope.lstAll.indexOf(item), 1);
-		localStorage.setStorage($scope.lstAll);
+		
 	};
 
 	$scope.addAllCompleted = function(checked){
@@ -58,8 +58,6 @@ todoapp.controller("todoAppController",function($scope, $stateParams, localStora
 		if(angular.isDefined(checked)){
 			$scope.lstAll[index].checked = checked;
 		}
-
-		localStorage.setStorage($scope.lstAll);
 	};
 
 	$scope.updateTodo = function(item, value){
@@ -82,8 +80,6 @@ todoapp.controller("todoAppController",function($scope, $stateParams, localStora
 		});
 
 		$scope.lstCompleted = [];
-
-		localStorage.setStorage($scope.lstAll);
 	};
 
 });

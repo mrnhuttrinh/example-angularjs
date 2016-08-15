@@ -1,8 +1,6 @@
 todoapp.directive('ngForm', function(){
 
-	var controller = ['$scope','localStorage', function($scope, localStorage){
-
-		$scope.lstAll = localStorage.getStorage();
+	var controller = ['$scope', function($scope){
 
 		$scope.addTodo = function(){
 			var item = {
@@ -13,7 +11,6 @@ todoapp.directive('ngForm', function(){
 			if ($scope.new) {
 	        	$scope.lstAll.push(item);
 	        	$scope.new = '';
-	        	localStorage.setStorage($scope.lstAll);
 	        }
 		};
 	}];
