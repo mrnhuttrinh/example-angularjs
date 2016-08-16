@@ -1,27 +1,24 @@
-todoapp.directive('ngForm', function(){
+define(['angular'], function(angular){
 
-	var controller = ['$scope', function($scope){
+	var moduleName = 'todoApp';
+	angular
+		.module(moduleName, [])
+		.directive('ngForm', function(){
 
-		$scope.addTodo = function(){
-			var item = {
-				value: $scope.new,
-				checked: false
-			};
-		
-			if ($scope.new) {
-	        	$scope.lstAll.push(item);
-	        	$scope.new = '';
-	        }
-		};
-	}];
-	var template = '<form class="todo-form" ng-submit="addTodo()">'+
+			var template = '<form class="todo-form" ng-submit="add()">'+
 				'<input class="new-todo" placeholder="What needs to be done?" ng-model="new"  autofocus />'+
 				'</form>';
 
-	return  {
-		restrict: 'EA',
-		controller: controller,
-		template: template
-	}
+			return  {
+				restrict: 'EA',
+				
+				scope: {
+					new: '=',
+					add: '&'
+				},
 
+				template: template
+			}
+		});	
+	return moduleName;
 });
