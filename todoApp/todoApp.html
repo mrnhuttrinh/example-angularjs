@@ -3,98 +3,78 @@
 <head> 
 	<meta charset="utf-8">
 	<title>todoApp Angularjs</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/mine.css">
 </head>
 <body ng-controller="todoAppController">
-	<!-- <div id="todoapp" class="col-lg-6 col-md-6 col-xs-6 col-sm-6 col-lg-offset-3 col-md-offset-3 col-xs-offset-3 col-sm-offset-3">
-		<div class="header text-center">
-			<h1>todos</h1>
-		</div>
-		<div class="content">
-			<div class="content-top">
-				<div my-form new="new" add="addTodo()"></div>
-			</div>
-			<div class="content-middle">
-				<input class="checkall-todo" type="checkbox" ng-show="lstAll.length > 0"  ng-click="addAllCompleted(checkboxAll)" ng-model="checkboxAll">
-				<div ng-repeat="todo in lstAll | filter :typeFilter track by $index" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" ng-class="todo.checked == true  ? 'items-completed' : 'items-active'" class="todo-list">
-					<div class="view" ng-show="!showUpdate">
-						<input class="toggle" type="checkbox" ng-model="todo.checked" ng-click="changeList(todo)">
-						<label ng-dblclick="todoUpdate = todo.value; showUpdate = true">{{todo.value}}</label>
-						<button type="button" ng-click="remove(todo)" class="remove-todo"></button>
-					</div>
-					<form ng-submit="updateTodo(todo, todoUpdate); showUpdate = false" ng-show="showUpdate"> 
-						<input type="text" ng-model= "todoUpdate" class="edit">
+	<div class="todoapp">
+	 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
+
+	 		<div class="row">
+	 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+	 				<h1 class="header">
+	 					todos
+	 				</h1>
+	 			</div>
+	 		</div>
+	 		<div class="view-body">
+	 			<div class="row add-todo">
+		 			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 toggle-all">
+		 				<input type="checkbox" name="" class="glyphicon glyphicon-chevron-down" ng-show="lstAll.length > 0"  ng-click="addAllCompleted(checkboxAll)" ng-model="checkboxAll" />
+		 			</div>
+		 			<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 directive">
+		 				<div my-form new="new" add="addTodo()"></div>
+		 			</div>
+	 			</div>
+		 		<div class="row" ng-repeat="todo in lstAll | filter :typeFilter track by $index">
+		 			<div ng-show="!showUpdate" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 todo-list">
+		 				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 toggle">
+		 					<input type="checkbox" name="" ng-model="todo.checked" ng-click="changeList(todo)" class="glyphicon-remove-sign glyphicon glyphicon-ok-sign" />
+		 				</div>
+			 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+			 				<label ng-dblclick="todoUpdate = todo.value; showUpdate = true">{{todo.value}}</label>
+			 			</div>
+			 			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+			 				<a href="" ng-click="remove(todo)" class="remove-todo" >
+			 					<span class="glyphicon glyphicon-remove"></span>
+			 				</a>
+			 			</div>
+		 			</div>
+
+		 			<form ng-submit="updateTodo(todo, todoUpdate); showUpdate = false" ng-show="showUpdate">
+		 				<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 edit-todo" >
+		 					<input type="text" ng-model= "todoUpdate" class="form-control" />
+		 				</div>
 					</form>
-				</div>
-			</div>
-			<div class="content-bottom" ng-show="lstAll.length >0">
-				<div class="pull-left">{{lstAll.length}} items left</div>
-				<div class="pull-left filter-group">
-					<a ui-sref="home" ng-class="{selected: status == ''}">All</a>
-					<a ui-sref="todo({ status: 'active' })" ng-class="{selected: status == 'active'}">Active</a>
-					<a ui-sref="todo({ status: 'completed'})" ng-class="{selected: status == 'completed'}">Completed</a>
-				</div>
-				<div class="pull-left clear-completed">
-					<a href="" ng-show="completedCount > 0" ng-click ="removeAll()">Clear completed</a>
-				</div>
-			</div>
-		</div>
-		<div class="footer">
-			<p>Double-click to edit a todo</p>
-			<p>Credits:
-				<a href="http://twitter.com/cburgdorf">Christoph Burgdorf</a>
-				<a href="http://ericbidelman.com">Eric Bidelman</a>
-				<a href="http://jacobmumm.com">Jacob Mumm</a> and
-				<a href="http://blog.igorminar.com">Igor Minar</a>
-			</p>
-			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
-		</div>
-	</div> -->
-
-	<div id="todoapp" class="row">
-		<div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 col-lg-offset-3 col-md-offset-3 col-xs-offset-3 col-sm-offset-3">
-			<div class="row">
-				<div class="header text-center">
-					<h1 class="text-danger">todos</h1>
-				</div>
-			</div>
-			<div class="row">
-				<div class="content col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="content-top">
-						<div my-form new="new" add="addTodo()"></div>
-					</div>
-					<div class="content-middle">
-						<label class="check-all">
-							<input type="checkbox" class="glyphicon glyphicon-menu-down" ng-show="lstAll.length > 0"  ng-click="addAllCompleted(checkboxAll)" ng-model="checkboxAll">
-						</label>
-						<div ng-repeat="todo in lstAll | filter:typeFilter track by $index"  ng-class="todo.checked == true  ? 'items-completed' : 'items-active'">
-							<form class="form-inline" ng-show="!showUpdate">
-								<div class="form-group">
-									<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-										<input type="checkbox" ng-model="todo.checked" ng-click="changeList(todo)" class="glyphicon glyphicon-ok"/>
-									</div>
-									
-									<label ng-dblclick="todoUpdate = todo.value; showUpdate = true" class="col-lg-8 col-md-8 col-sm-8 col-xs-8">{{todo.value}}</label>
-
-									<label class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-										<button type="button" ng-click="remove(todo)" class=" glyphicon glyphicon-remove"></button>
-									</label>
-									
-								</div>
-							</form>
-							<form ng-submit="updateTodo(todo, todoUpdate); showUpdate = false" ng-show="showUpdate"> 
-								<input type="text" ng-model= "todoUpdate" class="edit" />
-							</form>
-						</div>
-					</div>
-					<div class="content-bottom">
-						
-					</div>
-				</div>
-
-			</div>
-		</div>
+		 		</div>
+		 		<div class="row todo-result">
+		 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 todo-count">
+		 				{{lstAll.length}} item left
+		 			</div>
+		 			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 filter">
+		 				<a ui-sref="home" ng-class="{selected: status == ''}">All</a>
+						<a ui-sref="todo({ status: 'active' })" ng-class="{selected: status == 'active'}">Active</a>
+						<a ui-sref="todo({ status: 'completed'})" ng-class="{selected: status == 'completed'}">Completed</a>
+		 			</div>
+		 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 clear-completed" ng-show="completedCount > 0" ng-click ="removeAll()">
+		 				<a href="">Clear completed</a>
+		 			</div>
+		 		</div>
+	 		</div>
+	 		
+	 		<div class="row">
+	 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer text-center">
+	 				<p>Double-click to edit a todo</p>
+					<p>Credits:
+						<a href="http://twitter.com/cburgdorf">Christoph Burgdorf</a>
+						<a href="http://ericbidelman.com">Eric Bidelman</a>
+						<a href="http://jacobmumm.com">Jacob Mumm</a> and
+						<a href="http://blog.igorminar.com">Igor Minar</a>
+					</p>
+					<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+	 			</div>
+	 		</div>
+	 	</div>
 	</div>
 	<script src="js/libs/require.js" data-main="main.js"></script>
 </body>
